@@ -1,10 +1,13 @@
 const express = require('express');
+const app = express();
 const config = require('config');
 const Joi = require('joi');
-const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
+app.set('view engine', 'pug');
+app.set('views', './views');
 
 console.log(config.get('name'));
 console.log(config.get('mail.host'));
@@ -17,7 +20,7 @@ const users = [
 ];
 
 app.get('/', (req, res) => {
-    res.send('Hey Ajai');
+    res.render('index', {title:'My Express App', message:'Welcome to my restful express app'});
 });
 
 app.get('/api/users', (req, res) => {
