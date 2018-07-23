@@ -26,19 +26,12 @@ app.get('/api/users/:id', (req, res)=>{
   }
 });
 
+
+
 app.post('/api/users', (req, res) =>{
+    const result =  validate(req.body);
+    if(result.error) return res.status(400).send(result.error.details[0].message);
 
-    const schema = {
-        name: Joi.string().min(3).required()
-    };
-
-    const result =  Joi.validate(req.body, schema);
-
-    if(result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-    
     const user = {
         id: users.length + 1,
         name: req.body.name
@@ -46,6 +39,39 @@ app.post('/api/users', (req, res) =>{
     users.push(user);
     res.send(user);
 });
+
+
+app.put('/api/users/:id', (req, res) =>{
+    const user = users.find(c => c.id === parseInt(req.params.id));
+    if(!user) return res.status(404).send('User not found');
+    
+    const result =  validate(req.body);
+    if(result.error) return res.status(400).send(result.error.details[0].message);
+
+    user.name = req.body.name;
+    res.send(user);
+});
+
+
+app.delete('/api/users/:id', (req, res)=>{
+    const user = users.find(c => c.id === parseInt(req.params.id));
+    if(!user) return res.status(404).send('User not found');
+    const index = users.indexOf(user);
+    users.splice(index,1);
+    res.send(user);
+});
+
+
+
+function validate(userRequest){
+    const schema = {
+        name: Joi.string().min(3).required()
+    };
+    return Joi.validate(userRequest, schema);
+}
+
+
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () =>{
