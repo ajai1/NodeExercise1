@@ -2,6 +2,8 @@ const express = require('express');
 const Joi = require('joi');
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.static('public'));
 
 const users = [
     {id:1, name:'Ajai'},
