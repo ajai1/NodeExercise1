@@ -1,0 +1,6 @@
+{
+    "name" : "My Production Environment",
+    "mail" :{
+        "host" : "172.0.0.2"
+    }
+}

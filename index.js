@@ -1,9 +1,14 @@
 const express = require('express');
+const config = require('config');
 const Joi = require('joi');
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
+
+console.log(config.get('name'));
+console.log(config.get('mail.host'));
+console.log(config.get('mail.password'));
 
 const users = [
     {id:1, name:'Ajai'},
